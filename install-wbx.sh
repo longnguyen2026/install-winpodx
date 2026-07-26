@@ -8,7 +8,7 @@
 set -e
 
 REPO="https://raw.githubusercontent.com/longnguyen2026/install-winpodx/main"
-SCRIPT="install-winpodx.sh"
+SCRIPT="install-wbx.sh"
 
 GREEN="\033[1;32m"
 YELLOW="\033[1;33m"
