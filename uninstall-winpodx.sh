@@ -1,3 +1,8 @@
+#!/usr/bin/env bash
+
+set -e
+
+#####################################
 # Dừng và xóa container
 podman stop winpodx-windows 2>/dev/null
 podman rm -f winpodx-windows 2>/dev/null
@@ -16,3 +21,5 @@ rm -f ~/.local/share/applications/winpodx.desktop
 
 # Làm mới menu
 update-desktop-database ~/.local/share/applications 2>/dev/null || true
+
+echo
