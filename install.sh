@@ -7,7 +7,7 @@
 
 set -e
 
-REPO="https://raw.githubusercontent.com/longnguyen2026/winpodx-installer/main"
+REPO="https://raw.githubusercontent.com/longnguyen2026/insrall-winpodx/main"
 SCRIPT="install-winpodx.sh"
 
 GREEN="\033[1;32m"
