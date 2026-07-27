@@ -10,7 +10,7 @@ bash <(curl -fsSL https://raw.githubusercontent.com/longnguyen2026/install-winpo
 Cửa sổ lệnh chạy:
 ```` Bash
 podman port winpodx-windows
-```
+````
 #Kết quả
 3389/tcp -> 127.0.0.1:3390
 445/tcp -> 127.0.0.1:4445
