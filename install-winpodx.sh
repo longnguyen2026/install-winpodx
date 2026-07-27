@@ -225,6 +225,8 @@ log "System is ready for WinPodX installation."
 
 section "Installing WinPodX"
 
+export WINPODX_WIN_VERSION="ltsc11"
+
 curl -fsSL https://raw.githubusercontent.com/kernalix7/winpodx/main/install.sh | bash
 
 log "WinPodX installer completed."
