@@ -229,7 +229,10 @@ export WINPODX_WIN_VERSION="ltsc11"
 
 curl -fsSL https://raw.githubusercontent.com/kernalix7/winpodx/main/install.sh | bash
 
+unset WINPODX_WIN_VERSION
+
 log "WinPodX installer completed."
+
 #####################################
 # PART 5/5
 # Final Configuration
