@@ -11,10 +11,12 @@ Cửa sổ lệnh chạy:
 ```` Bash
 podman port winpodx-windows
 ````
-````#Kết quả
+#Kết quả
+````
 3389/tcp -> 127.0.0.1:3390
 445/tcp -> 127.0.0.1:4445
 8006/tcp -> 127.0.0.1:8007
 8765/tcp -> 127.0.0.1:8765
 3389/udp -> 127.0.0.1:3390
 => Dòng thứ 3 là dòng địa chỉ sử dụng
+````
