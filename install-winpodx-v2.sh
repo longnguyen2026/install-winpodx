@@ -223,9 +223,36 @@ log "System is ready for WinPodX installation."
 # Install WinPodX
 #####################################
 
-section "Installing WinPodX"
+section "Select Windows Edition"
 
-export WINPODX_WIN_VERSION="ltsc11"
+echo
+echo "=========================================="
+echo "        Select Windows Edition"
+echo "=========================================="
+echo "1) Windows 11 Pro"
+echo "2) Windows 11 LTSC 2024 (Recommended)"
+echo "3) Windows 10 Pro"
+echo "4) Windows 10 LTSC"
+echo "5) Tiny11"
+echo
+
+while true; do
+    read -rp "Choose [1-5]: " choice
+    case "$choice" in
+        1) export WINPODX_WIN_VERSION="11"; break ;;
+        2) export WINPODX_WIN_VERSION="ltsc11"; break ;;
+        3) export WINPODX_WIN_VERSION="10"; break ;;
+        4) export WINPODX_WIN_VERSION="ltsc10"; break ;;
+        5) export WINPODX_WIN_VERSION="tiny11"; break ;;
+        *) echo "Invalid selection. Please try again." ;;
+    esac
+done
+
+echo
+echo "Selected: $WINPODX_WIN_VERSION"
+echo
+
+section "Installing WinPodX"
 
 curl -fsSL https://raw.githubusercontent.com/kernalix7/winpodx/main/install.sh | bash
 
