@@ -237,33 +237,46 @@ echo "5) Tiny11"
 echo
 
 while true; do
-    read -rp "Choose [1-5]: " choice
+    read -rp "Choose [1-5] (default: 2): " choice
+
+    choice=${choice:-2}
+
     case "$choice" in
-    1)
-        export WINPODX_WIN_VERSION="11"
-        WIN_NAME="Windows 11 Pro"
-        ;;
-    2)
-        export WINPODX_WIN_VERSION="ltsc11"
-        WIN_NAME="Windows 11 LTSC 2024"
-        ;;
-    3)
-        export WINPODX_WIN_VERSION="10"
-        WIN_NAME="Windows 10 Pro"
-        ;;
-    4)
-        export WINPODX_WIN_VERSION="ltsc10"
-        WIN_NAME="Windows 10 LTSC"
-        ;;
-    5)
-        export WINPODX_WIN_VERSION="tiny11"
-        WIN_NAME="Tiny11"
-        ;;
-esac
+        1)
+            export WINPODX_WIN_VERSION="11"
+            WIN_NAME="Windows 11 Pro"
+            break
+            ;;
+        2)
+            export WINPODX_WIN_VERSION="ltsc11"
+            WIN_NAME="Windows 11 LTSC 2024"
+            break
+            ;;
+        3)
+            export WINPODX_WIN_VERSION="10"
+            WIN_NAME="Windows 10 Pro"
+            break
+            ;;
+        4)
+            export WINPODX_WIN_VERSION="ltsc10"
+            WIN_NAME="Windows 10 LTSC"
+            break
+            ;;
+        5)
+            export WINPODX_WIN_VERSION="tiny11"
+            WIN_NAME="Tiny11"
+            break
+            ;;
+        *)
+            echo
+            echo "Invalid selection. Please choose a number from 1 to 5."
+            echo
+            ;;
+    esac
 done
 
 echo
-echo "Selected: $WINPODX_WIN_VERSION"
+log "Selected Windows: $WIN_NAME"
 echo
 
 section "Installing WinPodX"
