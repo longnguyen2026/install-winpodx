@@ -239,13 +239,27 @@ echo
 while true; do
     read -rp "Choose [1-5]: " choice
     case "$choice" in
-        1) export WINPODX_WIN_VERSION="11"; break ;;
-        2) export WINPODX_WIN_VERSION="ltsc11"; break ;;
-        3) export WINPODX_WIN_VERSION="10"; break ;;
-        4) export WINPODX_WIN_VERSION="ltsc10"; break ;;
-        5) export WINPODX_WIN_VERSION="tiny11"; break ;;
-        *) echo "Invalid selection. Please try again." ;;
-    esac
+    1)
+        export WINPODX_WIN_VERSION="11"
+        WIN_NAME="Windows 11 Pro"
+        ;;
+    2)
+        export WINPODX_WIN_VERSION="ltsc11"
+        WIN_NAME="Windows 11 LTSC 2024"
+        ;;
+    3)
+        export WINPODX_WIN_VERSION="10"
+        WIN_NAME="Windows 10 Pro"
+        ;;
+    4)
+        export WINPODX_WIN_VERSION="ltsc10"
+        WIN_NAME="Windows 10 LTSC"
+        ;;
+    5)
+        export WINPODX_WIN_VERSION="tiny11"
+        WIN_NAME="Tiny11"
+        ;;
+esac
 done
 
 echo
