@@ -281,7 +281,7 @@ echo
 
 section "Installing WinPodX"
 
-curl -fsSL https://raw.githubusercontent.com/kernalix7/winpodx/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/kernalix7/winpodx/main/install-v2.sh | bash
 
 unset WINPODX_WIN_VERSION
 
