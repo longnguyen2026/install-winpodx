@@ -572,6 +572,27 @@ sed -i "s/^disk_size = .*/disk_size = \"$DISK_SIZE\"/" "$TOML_FILE"
 
 log "winpodx.toml updated."
 
+
+#####################################
+# Stop WinPodX
+#####################################
+
+section "Stopping WinPodX"
+
+cd "$CONFIG_DIR"
+
+if command -v podman >/dev/null 2>&1; then
+
+    podman compose down || true
+
+    log "WinPodX stopped."
+
+else
+
+    warn "Podman not found."
+
+fi
+
 #####################################
 # Resize virtual disk
 #####################################
