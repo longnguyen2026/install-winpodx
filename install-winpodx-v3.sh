@@ -550,10 +550,10 @@ log "Backup completed."
 
 section "Updating compose.yaml"
 
-sed -i "s|VERSION:.*|      VERSION: \"$WIN_VERSION\"|" "$COMPOSE_FILE"
-sed -i "s|RAM_SIZE:.*|      RAM_SIZE: \"$RAM_SIZE\"|" "$COMPOSE_FILE"
-sed -i "s|CPU_CORES:.*|      CPU_CORES: \"$CPU_CORES\"|" "$COMPOSE_FILE"
-sed -i "s|DISK_SIZE:.*|      DISK_SIZE: \"$DISK_SIZE\"|" "$COMPOSE_FILE"
+sed -Ei "s|^([[:space:]]*)VERSION:.*|\1VERSION: \"$WIN_VERSION\"|" "$COMPOSE_FILE"
+sed -Ei "s|^([[:space:]]*)RAM_SIZE:.*|\1RAM_SIZE: \"$RAM_SIZE\"|" "$COMPOSE_FILE"
+sed -Ei "s|^([[:space:]]*)CPU_CORES:.*|\1CPU_CORES: \"$CPU_CORES\"|" "$COMPOSE_FILE"
+sed -Ei "s|^([[:space:]]*)DISK_SIZE:.*|\1DISK_SIZE: \"$DISK_SIZE\"|" "$COMPOSE_FILE"
 
 log "compose.yaml updated."
 
