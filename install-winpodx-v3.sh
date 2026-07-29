@@ -1,17 +1,160 @@
-
-
-
-
-
-
-
-
-
-
 #!/usr/bin/env bash
 
+set -e
+
+#####################################
+# PART 2/5 Colors
+#####################################
+GREEN="\033[1;32m"
+RED="\033[1;31m"
+YELLOW="\033[1;33m"
+BLUE="\033[1;34m"
+NC="\033[0m"
+
+log() {
+    echo -e "${GREEN}[OK]${NC} $1"
+}
+
+warn() {
+    echo -e "${YELLOW}[WARN]${NC} $1"
+}
+
+die() {
+    echo -e "${RED}[ERROR]${NC} $1"
+    exit 1
+}
+
+section() {
+    echo
+    echo -e "${BLUE}========================================${NC}"
+    echo -e "${BLUE}$1${NC}"
+    echo -e "${BLUE}========================================${NC}"
+}
+
+#####################################
+# Root check
+#####################################
+
+section "Checking sudo"
+
+sudo -v || die "This installer requires sudo."
+
+#####################################
+# Linux distribution
+#####################################
+
+section "Checking Linux"
+
+if [ ! -f /etc/os-release ]; then
+    die "Cannot determine Linux distribution."
+fi
+
+source /etc/os-release
+
+log "Detected: $PRETTY_NAME"
+
+#####################################
+# Architecture
+#####################################
+
+section "Checking CPU"
+
+ARCH=$(uname -m)
+
+case "$ARCH" in
+    x86_64)
+        log "64-bit CPU detected"
+        ;;
+    *)
+        die "Only x86_64 is supported."
+        ;;
+esac
+
+#####################################
+# Virtualization
+#####################################
+
+section "Checking virtualization"
+
+if grep -Eq "(vmx|svm)" /proc/cpuinfo; then
+    log "CPU virtualization supported"
+else
+    die "VT-x / AMD-V is disabled."
+fi
+
+#####################################
+# KVM
+#####################################
+
+section "Checking KVM"
+
+if [ -e /dev/kvm ]; then
+    log "KVM available"
+else
+    warn "/dev/kvm not found"
+fi
+
+#####################################
+# RAM
+#####################################
+
+section "Checking memory"
+
+RAM=$(free -g | awk '/Mem:/ {print $2}')
+
+echo "RAM : ${RAM} GB"
+
+if [ "$RAM" -lt 8 ]; then
+    warn "8 GB or more is recommended."
+fi
+
+#####################################
+# Disk
+#####################################
+
+section "Checking disk"
+
+FREE=$(df -BG "$HOME" | awk 'NR==2 {gsub("G","",$4);print $4}')
+
+echo "Free : ${FREE} GB"
+
+if [ "$FREE" -lt 60 ]; then
+    warn "At least 60 GB free space is recommended."
+fi
+
+#####################################
+# Internet
+#####################################
+
+section "Checking network"
+
+ping -c1 github.com >/dev/null \
+    && log "Internet OK" \
+    || die "No Internet connection."
+
+#####################################
+# Update packages
+#####################################
+
+section "Updating APT"
+
+sudo apt update
+
+log "APT updated"
+
+#####################################
+# Continue
+#####################################
+
+echo
+log "System preparation completed."
+echo
+echo "Next step:"
+echo "Install Podman"
+echo "Install WinPodX"
+
 #############################################
-# WinPodX Configuration Wizard
+# PART 3/5 WinPodX Configuration Wizard
 #############################################
 
 choose_windows() {
@@ -242,3 +385,128 @@ choose_ram
 choose_cpu
 choose_disk
 summary
+
+#####################################
+# PART 4/5
+# Install WinPodX
+#####################################
+
+section "Select Windows Edition"
+
+echo
+echo "=========================================="
+echo "        Select Windows Edition"
+echo "=========================================="
+echo "1) Windows 11 Pro"
+echo "2) Windows 11 LTSC 2024 (Recommended)"
+echo "3) Windows 10 Pro"
+echo "4) Windows 10 LTSC"
+echo "5) Tiny11"
+echo
+
+while true; do
+    read -rp "Choose [1-5] (default: 2): " choice
+
+    choice=${choice:-2}
+
+    case "$choice" in
+        1)
+            export WINPODX_WIN_VERSION="11"
+            WIN_NAME="Windows 11 Pro"
+            break
+            ;;
+        2)
+            export WINPODX_WIN_VERSION="ltsc11"
+            WIN_NAME="Windows 11 LTSC 2024"
+            break
+            ;;
+        3)
+            export WINPODX_WIN_VERSION="10"
+            WIN_NAME="Windows 10 Pro"
+            break
+            ;;
+        4)
+            export WINPODX_WIN_VERSION="ltsc10"
+            WIN_NAME="Windows 10 LTSC"
+            break
+            ;;
+        5)
+            export WINPODX_WIN_VERSION="tiny11"
+            WIN_NAME="Tiny11"
+            break
+            ;;
+        *)
+            echo
+            echo "Invalid selection. Please choose a number from 1 to 5."
+            echo
+            ;;
+    esac
+done
+
+echo
+log "Selected Windows: $WIN_NAME"
+echo
+
+section "Installing WinPodX"
+
+curl -fsSL https://raw.githubusercontent.com/kernalix7/winpodx/main/install.sh | bash
+
+unset WINPODX_WIN_VERSION
+
+log "WinPodX installer completed."
+
+#####################################
+# PART 5/5
+# Final Configuration
+#####################################
+
+section "Final configuration"
+
+# Tạo thư mục cấu hình
+mkdir -p "$HOME/.config/winpodx"
+
+log "Configuration directory ready."
+
+#####################################
+# Desktop database
+#####################################
+
+section "Updating desktop database"
+
+if command -v update-desktop-database >/dev/null 2>&1; then
+    update-desktop-database "$HOME/.local/share/applications" 2>/dev/null || true
+fi
+
+#####################################
+# Refresh icon cache
+#####################################
+
+section "Refreshing icon cache"
+
+gtk-update-icon-cache -f -t /usr/share/icons/hicolor 2>/dev/null || true
+
+#####################################
+# Success
+#####################################
+
+clear
+
+echo
+echo "========================================================"
+echo "          WinPodX Installation Completed!"
+echo "========================================================"
+echo
+echo "Next steps:"
+echo
+echo "1. Launch WinPodX"
+echo "2. Install Windows (first run only)"
+echo "3. Wait until Windows setup finishes"
+echo "4. Install your Windows applications"
+echo
+echo "Recommended:"
+echo " • Zalo"
+echo " • iVMS-4200"
+echo " • CapCut"
+echo
+echo "Enjoy!"
+echo
