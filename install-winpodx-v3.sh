@@ -652,4 +652,77 @@ grep "^disk_size" "$TOML_FILE"
 echo
 log "WinPodX configuration completed successfully."
 
+###############################################################################
+# P5 - Finish & Post Installation
+###############################################################################
+
+print_header() {
+    echo
+    echo "============================================================"
+    echo " $1"
+    echo "============================================================"
+}
+
+print_header "P5 - Finalizing Installation"
+
+echo
+echo "Checking WinPodX status..."
+
+CONFIG_DIR="$HOME/.config/winpodx"
+COMPOSE_FILE="$CONFIG_DIR/compose.yaml"
+TOML_FILE="$CONFIG_DIR/winpodx.toml"
+
+# Check configuration files
+if [[ ! -f "$COMPOSE_FILE" ]]; then
+    echo "❌ compose.yaml not found!"
+    exit 1
+fi
+
+if [[ ! -f "$TOML_FILE" ]]; then
+    echo "❌ winpodx.toml not found!"
+    exit 1
+fi
+
+# Check Podman container
+echo
+echo "Container Status:"
+podman ps --format "table {{.Names}}\t{{.Status}}" | grep -i winpod || true
+
+echo
+echo "Installed Configuration"
+echo "----------------------------------------"
+echo "Windows Version : $WIN_VERSION"
+echo "RAM             : $RAM_SIZE"
+echo "CPU Cores       : $CPU_CORES"
+echo "Disk Size       : $DISK_SIZE"
+echo "----------------------------------------"
+
+echo
+echo "Configuration files:"
+echo "  $COMPOSE_FILE"
+echo "  $TOML_FILE"
+
+echo
+echo "Useful Commands"
+echo "----------------------------------------"
+echo "Start VM   : cd ~/.config/winpodx && podman compose up -d"
+echo "Stop VM    : cd ~/.config/winpodx && podman compose down"
+echo "Restart VM : cd ~/.config/winpodx && podman compose restart"
+echo "Logs       : cd ~/.config/winpodx && podman compose logs -f"
+echo "----------------------------------------"
+
+echo
+echo "============================================================"
+echo "          WinPodX Installation Completed!"
+echo "============================================================"
+
+echo
+echo "Next steps:"
+echo "  1. Open WinPodX from your Applications menu."
+echo "  2. Wait for Windows initial setup."
+echo "  3. Install WinApps if desired."
+echo "  4. Enjoy Windows on Linux!"
+
+echo
+echo "Thank you for using WinPodX Installer."
 
