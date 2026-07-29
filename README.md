@@ -1,6 +1,6 @@
 # Cài đặt Winpodx
 ```` Bash
-bash <(curl -fsSL https://raw.githubusercontent.com/longnguyen2026/install-winpodx/main/install.sh)
+bash <(curl -fsSL https://raw.githubusercontent.com/longnguyen2026/install-winpodx/main/install-v3.sh)
 ````
 # Gỡ Winpodx
 ```` Bash
